@@ -1,0 +1,9 @@
+--- SPRING BOOT | MY BATIS | DOCKER COMPOSE ---
+
+- step:
+        1. Mở terminal tại thư mục gốc của dự án nơi lưu tệp docker-compose.yml.
+        2. Run: docker-compose up --build
+- result:
+        1. Xây dựng lại Docker image từ Dockerfile nếu có thay đổi (do --build).
+        2. Khởi động tất cả các container được định nghĩa trong file docker-compose.yml.
+

@@ -1,0 +1,67 @@
+pipeline {
+    agent any
+
+    environment {
+        SPRING_DATASOURCE_URL = "jdbc:mysql://mysql:3306/test-mybatis"
+        SPRING_DATASOURCE_USERNAME = "root"
+        SPRING_DATASOURCE_PASSWORD = "root"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                
+                git 'https://github.com/your-username/your-repo.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    // Chạy lệnh maven để build ứng dụng
+                    sh 'mvn clean install -DskipTests'
+                }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                script {
+                    // Build Docker image cho ứng dụng
+                    sh 'docker build -t mybatis-app .'
+                }
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                script {
+                    // Đẩy Docker image lên Docker Hub (hoặc Registry khác)
+                    // Đảm bảo rằng bạn đã đăng nhập vào Docker Registry trước
+                    sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+                    sh 'docker tag mybatis-app $DOCKER_USERNAME/mybatis-app:latest'
+                    sh 'docker push $DOCKER_USERNAME/mybatis-app:latest'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    // Deploy lên môi trường bằng Docker Compose
+                    sh 'docker-compose down'
+                    sh 'docker-compose up -d'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build and Deploy successful!'
+        }
+        failure {
+            echo 'Build or Deploy failed.'
+        }
+    }
+}

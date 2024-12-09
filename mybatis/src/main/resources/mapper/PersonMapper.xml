@@ -1,0 +1,22 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.exp.mybatis.mapper.PersonMapperXml">
+
+    <resultMap id="personMapper" type="com.exp.mybatis.model.PersonData">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="address" property="address" />
+    </resultMap>
+
+    <select id="findPersonById" resultMap="personMapper">
+        select * from person WHERE id=#{id}
+    </select>
+
+    <insert id="createPerson" parameterType="com.exp.mybatis.model.PersonRequest" useGeneratedKeys="true" keyProperty="id">
+        insert into person (name, address)
+        values (#{name}, #{address})
+    </insert>
+
+</mapper>
