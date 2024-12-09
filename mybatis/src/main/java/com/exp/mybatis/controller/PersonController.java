@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1")
 public class PersonController {
 
+    private String hello = "Hello World";
+
     @Autowired
     private PersonService personService;
 
